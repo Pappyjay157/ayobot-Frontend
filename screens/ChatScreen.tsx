@@ -15,8 +15,10 @@ import ChatBubble from '../components/ChatBubble';
 import MessageInput from '../components/MessageInput';
 import TypewriterHeader from '../components/TypewriterHeader';
 import HackingBackground from '../components/HackingBackground';
+import { useRef, useEffect } from 'react';
 
 const ChatScreen = () => {
+  const flatListRef = useRef<FlatList>(null);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -25,6 +27,10 @@ const ChatScreen = () => {
     },
   ]);
   const [isTyping, setIsTyping] = useState(false);
+
+  useEffect(() => {
+    flatListRef.current?.scrollToEnd({ animated: true})
+  }, [messages]);
 
   const sendMessage = async (text: string) => {
     const userMsg: Message = { id: Date.now().toString(), sender: 'user', text };
@@ -57,17 +63,19 @@ const ChatScreen = () => {
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={70} 
+      keyboardVerticalOffset={10} 
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={{ flex: 1 }}>
         {isTyping && <HackingBackground />}
           <TypewriterHeader />
           <FlatList
+            ref ={flatListRef}
             data={messages}
             keyExtractor={item => item.id}
             renderItem={({ item }) => <ChatBubble message={item} />}
             contentContainerStyle={{ paddingVertical: 10 }}
+            showsVerticalScrollIndicator={true}
           />
           {isTyping && <ActivityIndicator size="small" color="#1F6FEB" style={{ marginBottom: 8 }} />}
           <MessageInput onSend={sendMessage} />
