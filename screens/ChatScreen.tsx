@@ -21,7 +21,7 @@ const ChatScreen = () => {
     {
       id: '1',
       sender: 'bot',
-      text: "Hi, I'm Ayobot. Ask me anything about programming.",
+      text: "👋 Hi, I'm Ayobot. Ask me anything about programming.",
     },
   ]);
   const [isTyping, setIsTyping] = useState(false);
