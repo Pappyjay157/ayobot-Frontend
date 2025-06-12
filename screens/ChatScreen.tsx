@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   FlatList,
@@ -27,6 +27,7 @@ const ChatScreen = () => {
     },
   ]);
   const [isTyping, setIsTyping] = useState(false);
+  const flatListRef = useRef<FlatList>(null);
 
   useEffect(() => {
     flatListRef.current?.scrollToEnd({ animated: true})
@@ -58,6 +59,9 @@ const ChatScreen = () => {
 
     setIsTyping(false);
   };
+  useEffect(() => {
+  flatListRef.current?.scrollToEnd({ animated: true });
+  }, [messages]);
 
   return (
     <KeyboardAvoidingView
@@ -70,7 +74,11 @@ const ChatScreen = () => {
         {isTyping && <HackingBackground />}
           <TypewriterHeader />
           <FlatList
+<<<<<<< HEAD
             ref ={flatListRef}
+=======
+            ref={flatListRef}
+>>>>>>> 7904dfa1a6aa17822b66f5c49751a87062609cf0
             data={messages}
             keyExtractor={item => item.id}
             renderItem={({ item }) => <ChatBubble message={item} />}
