@@ -3,6 +3,16 @@ import { View, TextInput, StyleSheet, Animated, PanResponder, KeyboardAvoidingVi
 import { TouchableOpacity, Text } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import styles from '../styles';
+import SigninScreen from './SigninScreen';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+
+
+type RootStackParamList = {
+  Signup: undefined;
+  Signin: undefined;
+  
+};
+
 
 interface FormData {
   name: string;
@@ -11,7 +21,9 @@ interface FormData {
   confirmPassword: string;
 }
 
+
 const SignupScreen: React.FC = () => {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -85,7 +97,7 @@ const SignupScreen: React.FC = () => {
             },
           ]}
         >
-          <Text style={styles.title}>Sign Up to Ayobot</Text>
+          <Text style={styles.title}>Welcome to Ayobot</Text>
           <Text style={styles.subtitle}>Your AI programming assistant</Text>
           <TextInput
             placeholder="Enter your name"
@@ -124,7 +136,10 @@ const SignupScreen: React.FC = () => {
             <Text style={styles.buttonText}>Sign Up</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.secondaryButton} onPress={() => console.log('Go to Login')}>
+          <TouchableOpacity
+            style={styles.secondaryButton}
+            onPress={() => navigation.navigate('Signin')}
+          >
             <Text style={styles.secondaryButtonText}>Already have an account? Login</Text>
           </TouchableOpacity>
         </Animated.View>

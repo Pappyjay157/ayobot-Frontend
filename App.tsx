@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import ChatScreen from './screens/ChatScreen';
 import AyobotIntro from './components/AyobotIntro';
 import SignupScreen from './screens/SignupScreen';
+import SigninScreen from './screens/SigninScreen';
 
 
 const Stack = createStackNavigator();
@@ -28,6 +29,8 @@ export default function App() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Signup" component={SignupScreen} />
         <Stack.Screen name="Chat" component={ChatScreen} />
+        <Stack.Screen name="Signin" component={SigninScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
 
