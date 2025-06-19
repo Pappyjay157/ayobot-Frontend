@@ -5,11 +5,14 @@ import { LinearGradient } from 'expo-linear-gradient';
 import styles from '../styles';
 import SigninScreen from './SigninScreen';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase'; 
 
 
 type RootStackParamList = {
   Signup: undefined;
   Signin: undefined;
+  Chat: undefined;
   
 };
 
@@ -19,6 +22,8 @@ interface FormData {
   email: string;
   password: string;
   confirmPassword: string;
+  userName: string;
+  phoneNumber: string;
 }
 
 
@@ -29,6 +34,8 @@ const SignupScreen: React.FC = () => {
     email: '',
     password: '',
     confirmPassword: '',
+    userName: '',
+    phoneNumber: '',
   });
 
   // Fade-in animation
@@ -69,10 +76,23 @@ const SignupScreen: React.FC = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const { email, password} = formData;
+
+    try{
+      const userCredential = await createUserWithEmailAndPassword(auth,email, password);
+      const user = userCredential.user;
+      console.log('User registered successfully:', user);
+      // navigation.navigate('Chat')
+    } catch (error){
+      console.error('Error registering user:', error);
+      alert('Error regstering user. Please try again later.');
+    }
     
-    console.log(formData);
+    
   };
+
+  
 
   return (
     <LinearGradient
@@ -113,6 +133,22 @@ const SignupScreen: React.FC = () => {
             onChangeText={(text) => handleChange('email', text)}
             autoCapitalize="none"
             keyboardType="email-address"
+            style={styles.input}
+          />
+
+          <TextInput
+            placeholder="Username"
+            placeholderTextColor="#7FDBFF"
+            value={formData.userName}
+            onChangeText={(text) => handleChange('userName', text)}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Phone Number"
+            placeholderTextColor="#7FDBFF"
+            value={formData.phoneNumber}
+            onChangeText={(text) => handleChange('phoneNumber', text)}
+            keyboardType="phone-pad"
             style={styles.input}
           />
           <TextInput
